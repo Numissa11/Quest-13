@@ -1,26 +1,27 @@
-.FormEmployee {
-  width: 400px;
+.Movie {
+  width: 500px;
   margin: 0 auto;
   text-align: left;
 }
 
-.FormEmployee h1 {
+.Movie h1 {
   text-align: center;
 }
 
-.FormEmployee .form-data {
+.Movie .form-data {
+  background-color: cornflowerblue;
   display: flex;
   justify-content: center;
-  margin: 5px 0;
+  margin: 10px 0;
 }
 
-.FormEmployee .form-data label {
+.Movie .form-data label {
   display: inline-block;
-  width: 75px;
+  width: 200px;
   margin-right: 10px;
   text-align: right;
 }
 
-.FormEmployee .form-data input:not([type="submit"]) {
+.Movie .form-data input:not([type="submit"]) {
   flex-grow: 1;
 }

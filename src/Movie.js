@@ -1,80 +1,130 @@
 import React from 'react';
-import axios from 'axios';
 
-class Movie extends React.Component {
-    constructor(props) {
+class  Movie extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       title: '',
       poster: '',
       comment: '',
-    }
-    this.onChange = this.onChange.bind(this);
-    this.submitForm = this.submitForm.bind(this);
+    };
   }
 
-  onChange(e) {
+  onChange = (event) => {
+    let { name, value } = event.target;
     this.setState({
-      [e.target.name]: e.target.value,
+      [name]: value,
+         
     });
-  }
+  
+  };
 
-  submitForm(e) {
-    e.preventDefault();
-  }
+  submitForm = (event) => {
+    event.preventDefault();
+    const url = `https://post-a-form.herokuapp.com/api/movies`;
 
+    const config = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.state),
+    };
 
+    console.log(config.body);
+    fetch(url, config)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.error) {
+          alert(res.error);
+        } else {
+          console.log(res);
+          alert(`Your movie: ${res.title}, has been successfully added!`);
+          this.setState({
+            title: '',
+            poster: '',
+            comment: '',
+          });
+        }
+      })
+      .catch((event) => {
+        console.error(event);
+        alert(
+          'Oopsi, an error occured, we cannot add your movie :( ).',
+        );
+      });
+  };
 
-render(){
-    return(
-        <div className="FormEmployee">
-        <h1>Saisie d'un employé</h1>
-      
-        <form onSubmit={this.submitForm}>
-          <fieldset>
-            <legend>Informations</legend>
-            <div className="form-data">
-              <label htmlFor="lastname">Nom</label>
-              <input
-                type="text"
-                id="lastname"
-                name="lastname"
-                onChange={this.onChange}
-                value={this.state.lastname}
-              />
-            </div>
-      
-            <div className="form-data">
-              <label htmlFor="firstname">Prénom</label>
-              <input
-                type="text"
-                id="firstname"
-                name="firstname"
-                onChange={this.onChange}
-                value={this.state.firstname}
-              />
-            </div>
-      
-            <div className="form-data">
-              <label htmlFor="email">E-mail</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                onChange={this.onChange}
-                value={this.state.email}
-              />
-            </div>
-            <hr />
-            <div className="form-data">
-              <input type="submit" value="Envoyer" />
-            </div>
-          </fieldset>
-        </form>
+  render() {
+    return (
+      <div>
+        <div className="Movie">
+          <h1>Your Favorite movie</h1>
+
+          <form onSubmit={this.submitForm}>
+            <fieldset className="fieldset">
+              <div className="form-data">
+                <label className="label-one" htmlFor="title">
+                  Movie's name
+                </label>
+               
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  placeholder="Please, enter the movie's name..."
+                  onChange={this.onChange}
+                  value={this.state.title}
+                  required
+                 
+                />
+              </div>
+
+              <div className="form-data">
+                <label className="label-one" htmlFor="poster">
+                  Poster Link
+                </label>
+                <input
+                  type="text"
+                  id="poster"
+                  name="poster"
+                  placeholder="Please, enter the movie's url..."
+                  onChange={this.onChange}
+                  value={this.state.poster}
+                  required
+                />
+              </div>
+
+              <div className="form-data comment">
+                <div>
+                  <label className="label-two" htmlFor="comment">
+                    Can you tell us Why is it your favorite movie? 
+                  </label>
+                </div>
+                <div>
+                  <textarea
+                    rows="7"
+                    cols="55"
+                    className="textarea"
+                    id="comment"
+                    name="comment"
+                    placeholder="Please, leave your comment here..."
+                    onChange={this.onChange}
+                    value={this.state.comment}
+                    required
+                  />
+                </div>
+              </div>
+              <hr />
+              <div className="form-data">
+                <input type="submit" value="Send" />
+              </div>
+            </fieldset>
+          </form>
+        </div>
       </div>
-    )
+    );
+  }
 }
-}
-
 
 export default Movie;
